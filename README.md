@@ -34,3 +34,6 @@ CRIAR TAGS
         'libraries':{
             'filtro': 'empresa.templatetags.filtro'
         }
+
+
+    video parou no 2:27h
