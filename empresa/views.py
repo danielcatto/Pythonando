@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Tecnologias, Empresa
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.messages import constants
-
+import os
 
 def nova_empresa(request):
     if request.method == "GET":
@@ -46,9 +46,22 @@ def nova_empresa(request):
         return redirect('/home/empresas')
 
 def empresas(request):
+    #pegando as variaveis na requisição URL GET
+    tecnologias_filtrar = request.GET.get('tecnologias')
+    nome_filtrar = request.GET.get('nome')
     empresas = Empresa.objects.all()
-    
-    return render(request, 'empresa.html', {'empresas': empresas})
+    tecnologias = Tecnologias.objects.all()
+
+    if (tecnologias_filtrar):
+        empresas = empresas.filter(tecnologias = tecnologias_filtrar)
+
+    if (nome_filtrar):
+                                    #NOME dander-dander icontains filtra palavras parecidas
+                                    #da variavel nome
+        empresas = empresas.filter(nome__icontains=nome_filtrar)
+
+
+    return render(request, 'empresa.html', {'empresas': empresas, 'tecnologias': tecnologias})
 
 
 
@@ -57,6 +70,18 @@ def excluir_empresa  (request, id):
     empresa.delete()
     messages.add_message(request, constants.SUCCESS, f'Empresa {empresa.nome} deletada com sucesso!')
     return redirect('/home/empresas')
+
+
+def empresa(request, id):
+    empresa_unica = get_object_or_404(Empresa, id=id)
+    empresas = Empresa.objects.all()
+    tecnologias = Tecnologias.objects.all()
+    print(type(empresa_unica))
+    return render(request, 'empresa_unica.html',
+                            {'empresa': empresa_unica,
+                             'tecnologias': tecnologias,
+                             'empresas': empresas
+                             })
 
 
 

@@ -7,6 +7,8 @@ para exibir um html é necessário usar templates e para começar é configurado
 quando cria uma model e quer que ela vá pra area do ADMIN precisa cadastrar ela no arquivo admin do APP
     - from .models import <nome das classes>f
 
+MODEL 
+    no model o campo: models.ManyToManyField, armazena em um campo várias informações
 
 FORM em empresas: <form action="" method="" enctype="multipart/form-data">
     - o enctype é para enviar a logo  atraves do formulário
@@ -35,5 +37,30 @@ CRIAR TAGS
             'filtro': 'empresa.templatetags.filtro'
         }
 
+video parou no 2:27h
 
-    video parou no 2:27h
+para exibir imagens no empresa_unica é necessario fazer import de 
+    #import para urls de imagem da logo dos clientes em empresa_unica
+   
+    from django.conf import settings
+    from django.conf.urls.static import static
+
+criar uma url no cor do projeto, ex:
+no settings da raiz 
+    """
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_URL = '/media/'
+    """
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+em select no template empresa_unica para exibir corretamente choices_nicho_mercado é necessario adicionar no html os seguinte codigo:
+    <input disabled type="text" class="form-control" value="{{empresa.get_nicho_mercado_display}}">
+
+    explicando: quando tem um campo choices (varias possibilidas) o django cria para a gente no model um get caracteristicas
+        o GET sempre vai existir e no fianl o DISPLAY  também
+
+
+
+
+aula parou no 57:59 minutos
